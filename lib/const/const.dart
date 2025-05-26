@@ -1,0 +1,3 @@
+String url = 'https://hnihhqdlcozfqolxwddw.supabase.co';
+String anonKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaWhocWRsY296ZnFvbHh3ZGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2MTk1MzAsImV4cCI6MjA0ODE5NTUzMH0.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaWhocWRsY296ZnFvbmd4ZGR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI2MTk1MzAsImV4cCI6MjA0ODE5NTUzMH0';

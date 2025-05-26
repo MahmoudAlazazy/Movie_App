@@ -1,0 +1,118 @@
+{
+  "project_info": {
+    "project_number": "4971734293",
+    "project_id": "traintracker-56f07",
+    "storage_bucket": "traintracker-56f07.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4971734293:android:af31c08479e2978803751c",
+        "android_client_info": {
+          "package_name": "com.azazy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE_66t-ACtOQcT817LWYRH9y8UjBJxuKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "4971734293-1m1j2v4ilgpq96l2i7jksg3q7vsth4v2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.trainTracker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4971734293:android:8df2492292aee0ca03751c",
+        "android_client_info": {
+          "package_name": "com.example.test_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE_66t-ACtOQcT817LWYRH9y8UjBJxuKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "4971734293-1m1j2v4ilgpq96l2i7jksg3q7vsth4v2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.trainTracker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:4971734293:android:425a49bdf0846f9f03751c",
+        "android_client_info": {
+          "package_name": "com.example.train_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE_66t-ACtOQcT817LWYRH9y8UjBJxuKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4971734293-m8cncboede416qpgovc11vh333rumg4e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "4971734293-1m1j2v4ilgpq96l2i7jksg3q7vsth4v2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.trainTracker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
