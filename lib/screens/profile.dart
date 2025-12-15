@@ -1,10 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:movies/screens/update_profile.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/widgets/movie_card.dart';
+import 'update_profile.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = "prof";
@@ -16,15 +18,20 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late TabController _tabController;
 
-  String _userName = 'Mahmoud EL3zaZy';
+  String _userName = 'Loading...';
+  String _userEmail = 'Loading...';
+  String _userPhone = 'Loading...';
   String _userAvatar = 'assets/images/avatar.png';
 
   List<String> _watchListIds = [];
   List<String> _historyIds = [];
   List<Movie> watchListMovies = [];
   List<Movie> historyMovies = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -59,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       try {
         final response = await http.get(
           Uri.parse(
-            'https://yts.am/api/v2/movie_details.json?movie_id=${int.tryParse(id) ?? 0}&with_images=true',
+            'https://yts.lt/api/v2/movie_details.json?movie_id=${int.tryParse(id) ?? 0}&with_images=true',
           ),
         );
 
@@ -141,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {
-                      Navigator.pushNamed(context, UpdateProfileScreen.routeName).then((_) {
+                      Navigator.pushNamed(context, 'update').then((_) {
                         _loadUserData();
                       });
                     },
