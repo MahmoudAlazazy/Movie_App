@@ -19,7 +19,7 @@ class SearchCubit extends Cubit<SearchState> {
 
       final response = await http.get(
         Uri.parse(
-          'https://yts.mx/api/v2/list_movies.json?query_term=$query&limit=20',
+          'https://yts.lt/api/v2/list_movies.json?query_term=$query&limit=20',
         ),
       );
 

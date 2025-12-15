@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movies/screens/forget_password.dart';
 import 'package:movies/screens/register.dart';
 import 'package:movies/home_screen.dart';
@@ -6,25 +7,17 @@ import 'package:movies/home_screen.dart';
 // Define constants for colors and styles
 const kBackgroundColor = Color(0xFF1A1A1A);
 const kTextFieldColor = Color(0xFF2C2C2C);
-const kButtonColor = Color(0xFFFDD835);
+const kButtonColor = Color(0xFFF6BD00); // Changed to blue
 var kHintTextStyle = TextStyle(color: Colors.grey[600]);
 final kBorder = OutlineInputBorder(
   borderRadius: BorderRadius.circular(12),
   borderSide: BorderSide.none,
 );
 
-class AuthWrapper extends StatelessWidget {
-  static const String routeName = "AuthWrapper";
-
-  @override
-  Widget build(BuildContext context) {
-    // بدون Firebase، هيبقى دايمًا LoginScreen إلا لو حددنا حالة
-    return LoginScreen();
-  }
-}
-
 class LoginScreen extends StatefulWidget {
   static const String routeName = "login";
+
+  const LoginScreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -37,29 +30,72 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _obscurePassword = true;
 
-  // دالة تسجيل دخول بسيطة بدون Firebase
-  void _signIn() {
+  // دالة تسجيل دخول باستخدام Firebase
+  Future<void> _signIn() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    // محاكاة تسجيل الدخول (بدون Firebase)
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('تم تسجيل الدخول بنجاح! جاري التوجيه...'),
-        backgroundColor: Colors.green,
-        duration: Duration(seconds: 2),
-      ),
-    );
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
 
-    // الانتظار ثواني وبعدين التوجيه لـ MainScreen
-    Future.delayed(Duration(seconds: 2), () {
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('تم تسجيل الدخول بنجاح!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
         Navigator.pushReplacementNamed(context, MainScreen.routeName);
       }
-    });
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'حدث خطأ ما';
+      
+      if (e.code == 'user-not-found') {
+        errorMessage = 'المستخدم غير موجود';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'كلمة المرور غير صحيحة';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'البريد الإلكتروني غير صحيح';
+      } else if (e.code == 'user-disabled') {
+        errorMessage = 'تم تعطيل حساب هذا المستخدم';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'محاولات كثيرة، حاول مرة أخرى لاحقًا';
+      } else if (e.code == 'network-request-failed') {
+        errorMessage = 'مشكلة في الاتصال بالإنترنت، تحقق من شبكتك وحاول مرة أخرى';
+      } else if (e.message?.contains('reCAPTCHA') == true || 
+                 e.message?.contains('www.googleapis.com') == true) {
+        errorMessage = 'مشكلة في التحقق الأمني، حاول مرة أخرى بعد قليل أو استخدم شبكة أخرى';
+      }
 
-    setState(() => _isLoading = false); // تعطيل الـ loading بعد التوجيه
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('حدث خطأ غير متوقع: $e'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
   }
 
   @override
@@ -131,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(height: 30),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
@@ -154,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Expanded(child: Divider(color: Colors.grey[700])),
                 ]),
                 SizedBox(height: 20),
-                Container(
+                SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton.icon(

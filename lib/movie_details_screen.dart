@@ -15,9 +15,9 @@ class MovieDetailsScreen extends StatelessWidget {
   final Movie movie;
 
   const MovieDetailsScreen({
-    Key? key,
+    super.key,
     required this.movie,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +32,9 @@ class MovieDetailsView extends StatelessWidget {
   final Movie initialMovie;
 
   const MovieDetailsView({
-    Key? key,
+    super.key,
     required this.initialMovie,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -415,9 +415,9 @@ class SectionHeading extends StatelessWidget {
   final String title;
 
   const SectionHeading({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

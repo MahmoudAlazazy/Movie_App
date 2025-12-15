@@ -1,0 +1,2 @@
+C:/src/flutter_windows_3.24.2-stable/movies/android/app/.cxx/RelWithDebInfo/332x2e3p/x86_64/CMakeFiles/edit_cache.dir
+C:/src/flutter_windows_3.24.2-stable/movies/android/app/.cxx/RelWithDebInfo/332x2e3p/x86_64/CMakeFiles/rebuild_cache.dir

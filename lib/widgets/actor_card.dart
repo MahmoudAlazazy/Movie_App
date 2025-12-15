@@ -17,9 +17,9 @@ class ActorCard extends StatelessWidget {
   final  actor;
 
   const ActorCard({
-    Key? key,
+    super.key,
     required this.actor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

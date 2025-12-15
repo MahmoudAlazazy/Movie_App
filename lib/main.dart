@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movies/onboarding_screen.dart';
 import 'package:movies/splash_screen.dart';
 import 'package:movies/screens/register.dart';
+import 'package:movies/auth_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,7 @@ Future<void> testFirebaseConnection() async {
 class MyApp extends StatelessWidget {
   final bool showHome;
 
-  const MyApp({Key? key, required this.showHome}) : super(key: key);
+  const MyApp({super.key, required this.showHome});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark(),
       initialRoute: SplashScreen.routeName, // أو خليه على حسب showHome
       routes: {
+        AuthWrapper.routeName: (context) => AuthWrapper(),
         MainScreen.routeName: (context) => MainScreen(),
         OnboardingScreen.routeName: (context) => OnboardingScreen(),
         SplashScreen.routeName: (context) => SplashScreen(),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:movies/cubit/browse_cubit.dart';
 import 'package:movies/cubit/states.dart';
+import 'package:movies/screens/chatbot_view.dart';
 import 'package:movies/widgets/movie_card.dart';
 
 import '../core/app_assets.dart';
@@ -33,6 +34,21 @@ class _HomeTabState extends State<HomeTab> {
               _buildCategorySection(context, 'Fantasy'),
             ],
           ),
+        ),
+
+        // إضافة Floating Action Button
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // فتح صفحة الشات بوت
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatBotView(),
+              ),
+            );
+          },
+          backgroundColor: Color.fromARGB(255, 156, 121, 5),
+          child: Icon(Icons.smart_toy ),
         ),
       ),
     );

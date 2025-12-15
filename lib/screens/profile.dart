@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:movies/screens/update_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:movies/models/movie.dart';
 import 'package:movies/widgets/movie_card.dart';
-import 'package:movies/core/app_assets.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = "prof";
@@ -32,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen>
     _loadUserData();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadUserData(); // Reload data when dependencies change (e.g., when navigating back)
+  }
+
   Future<void> _loadUserData() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -41,35 +48,33 @@ class _ProfileScreenState extends State<ProfileScreen>
       _historyIds = prefs.getStringList('history') ?? [];
     });
 
-    watchListMovies = _getMoviesFromIds(_watchListIds);
-    historyMovies = _getMoviesFromIds(_historyIds);
+    watchListMovies = await _getMoviesFromIds(_watchListIds);
+    historyMovies = await _getMoviesFromIds(_historyIds);
     setState(() {});
   }
 
-  List<Movie> _getMoviesFromIds(List<String> ids) {
-    return ids.map((id) => Movie(
-      id: int.tryParse(id) ?? 0,
-      url: '',
-      imdbCode: '',
-      title: 'Movie $id',
-      titleEnglish: '',
-      titleLong: '',
-      slug: '',
-      year: 2023,
-      rating: 7.7,
-      runtime: 120,
-      genres: [],
-      language: '',
-      backgroundImage: '',
-      backgroundImageOriginal: '',
-      smallCoverImage: '',
-      mediumCoverImage: 'assets/images/placeholder.jpg', // Local asset
-      largeCoverImage: '',
-      state: '',
-      torrents: [],
-      dateUploaded: '',
-      dateUploadedUnix: 0,
-    )).toList();
+  Future<List<Movie>> _getMoviesFromIds(List<String> ids) async {
+    List<Movie> movies = [];
+    for (String id in ids) {
+      try {
+        final response = await http.get(
+          Uri.parse(
+            'https://yts.am/api/v2/movie_details.json?movie_id=${int.tryParse(id) ?? 0}&with_images=true',
+          ),
+        );
+
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          final movieData = data['data']['movie'];
+          movies.add(Movie.fromJson(movieData));
+        } else {
+          print('Failed to fetch movie details for ID $id: ${response.statusCode}');
+        }
+      } catch (e) {
+        print('Error fetching movie details for ID $id: $e');
+      }
+    }
+    return movies;
   }
 
   @override

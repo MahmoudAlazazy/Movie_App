@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
-import 'package:movies/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -28,6 +26,8 @@ final kFocusedErrorBorder = OutlineInputBorder(
 
 class RegisterScreen extends StatefulWidget {
   static const String routeName = "register";
+
+  const RegisterScreen({super.key});
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -123,6 +123,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
         errorMessage = 'كلمة المرور ضعيفة';
       } else if (error.code == 'invalid-email') {
         errorMessage = 'البريد الإلكتروني غير صالح';
+      } else if (error.code == 'network-request-failed') {
+        errorMessage = 'مشكلة في الاتصال بالإنترنت، تحقق من شبكتك وحاول مرة أخرى';
+      } else if (error.message?.contains('reCAPTCHA') == true || 
+                 error.message?.contains('www.googleapis.com') == true) {
+        errorMessage = 'مشكلة في التحقق الأمني، حاول مرة أخرى بعد قليل أو استخدم شبكة أخرى';
       }
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -310,7 +315,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               SizedBox(height: 40),
-              Container(
+              SizedBox(
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(

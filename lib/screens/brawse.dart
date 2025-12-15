@@ -30,7 +30,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
   Future<void> fetchMovies() async {
     final response = await http.get(Uri.parse(
-        'https://yts.mx/api/v2/list_movies.json?limit=10&genre=$selectedCategory'));
+        'https://yts.am/api/v2/list_movies.json?limit=10&genre=$selectedCategory'));
     if (response.statusCode == 200) {
       setState(() => movies = json.decode(response.body)['data']['movies']);
     }

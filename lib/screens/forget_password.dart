@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   static const routeName = "forget";
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
@@ -11,6 +12,7 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -18,15 +20,66 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
     super.dispose();
   }
 
-  void _verifyEmail() {
-    if (_formKey.currentState!.validate()) {
-      // Handle email verification logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Verification email sent!'),
-          backgroundColor: Colors.green,
-        ),
+  Future<void> _verifyEmail() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() => _isLoading = true);
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text.trim(),
       );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 5),
+          ),
+        );
+        
+        // العودة لصفحة تسجيل الدخول بعد إرسال الإيميل
+        Future.delayed(Duration(seconds: 3), () {
+          if (mounted) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+          }
+        });
+      }
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'حدث خطأ ما';
+      
+      if (e.code == 'user-not-found') {
+        errorMessage = 'المستخدم غير موجود';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'البريد الإلكتروني غير صحيح';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'محاولات كثيرة، حاول مرة أخرى لاحقًا';
+      }
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('حدث خطأ غير متوقع: $e'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -129,7 +182,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
 
               // Verify Email button
               ElevatedButton(
-                onPressed: _verifyEmail,
+                onPressed: _isLoading ? null : _verifyEmail,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFFFFA726),
                   foregroundColor: Colors.black,
@@ -139,13 +192,22 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   elevation: 0,
                 ),
-                child: const Text(
-                  'Verify Email',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
+                child: _isLoading
+                    ? SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          color: Colors.black,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : const Text(
+                        'Verify Email',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
               ),
             ],
           ),

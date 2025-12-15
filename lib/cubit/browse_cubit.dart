@@ -15,7 +15,7 @@ class BrowseCubit extends Cubit<BrowseState> {
 
       final response = await http.get(
         Uri.parse(
-          'https://yts.mx/api/v2/list_movies.json?limit=20&genre=$category',
+          'https://yts.lt/api/v2/list_movies.json?limit=20&genre=$category',
         ),
       );
 

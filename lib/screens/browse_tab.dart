@@ -7,7 +7,7 @@ import '../cubit/browse_cubit.dart';
 import '../widgets/movie_card.dart';
 
 class BrowseTab extends StatelessWidget {
-  const BrowseTab({Key? key}) : super(key: key);
+  const BrowseTab({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class BrowseView extends StatelessWidget {
     'Western',
   ];
 
-  const BrowseView({Key? key}) : super(key: key);
+  const BrowseView({super.key});
 
   @override
   Widget build(BuildContext context) {

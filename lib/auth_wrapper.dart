@@ -4,6 +4,10 @@ import 'package:movies/home_screen.dart';
 import 'package:movies/screens/login_screen.dart';
 
 class AuthWrapper extends StatelessWidget {
+  static const String routeName = "auth_wrapper";
+
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
