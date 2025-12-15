@@ -2,6 +2,8 @@
 
 **The Ultimate Movie Discovery Experience**
 
+![Cover Image](assets/Cover(3).png)
+
 Streamix is a sophisticated movie discovery platform that revolutionizes how film enthusiasts explore cinema. Built with cutting-edge technology and an intuitive design philosophy, Streamix delivers an immersive experience for discovering, exploring, and engaging with the world's most compelling films.
 
 Our platform seamlessly bridges the gap between movie discovery and entertainment, offering users a curated gateway to cinematic excellence through high-quality trailers and intelligent content recommendations.
