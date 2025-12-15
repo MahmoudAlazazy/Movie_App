@@ -17,6 +17,7 @@ Experience cinema like never before with our extensive library of high-definitio
 🧠 AI-Powered Chatbot & Recommendation System
 
 Streamix features an intelligent chatbot integrated with an AI recommendation model designed to understand user intent and preferences.
+
 Users can interact naturally with the chatbot to:
 
     Ask for movie recommendations

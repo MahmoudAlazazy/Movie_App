@@ -23,15 +23,15 @@ class _ProfileScreenState extends State<ProfileScreen>
   late TabController _tabController;
 
   String _userName = 'Loading...';
-  String _userEmail = 'Loading...';
-  String _userPhone = 'Loading...';
+  final String _userEmail = 'Loading...';
+  final String _userPhone = 'Loading...';
   String _userAvatar = 'assets/images/avatar.png';
 
   List<String> _watchListIds = [];
   List<String> _historyIds = [];
   List<Movie> watchListMovies = [];
   List<Movie> historyMovies = [];
-  bool _isLoading = true;
+  final bool _isLoading = true;
 
   @override
   void initState() {
