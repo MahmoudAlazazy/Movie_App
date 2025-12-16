@@ -11,6 +11,7 @@ import 'package:movies/onboarding_screen.dart';
 import 'package:movies/splash_screen.dart';
 import 'package:movies/screens/register.dart';
 import 'package:movies/auth_wrapper.dart';
+import 'package:movies/services/theme_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,9 @@ void main() async {
   // Shared Preferences لتحديد ما إذا كان Onboarding تم عرضه أم لا
   final prefs = await SharedPreferences.getInstance();
   final showHome = prefs.getBool('showHome') ?? false;
+
+  // Load theme preference
+  await ThemeService().loadTheme();
 
   runApp(MyApp(showHome: showHome));
 }
@@ -47,24 +51,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Movie App',
-      theme: ThemeData.dark(),
-      initialRoute: SplashScreen.routeName, // أو خليه على حسب showHome
-      routes: {
-        AuthWrapper.routeName: (context) => AuthWrapper(),
-        MainScreen.routeName: (context) => MainScreen(),
-        OnboardingScreen.routeName: (context) => OnboardingScreen(),
-        SplashScreen.routeName: (context) => SplashScreen(),
-        LoginScreen.routeName: (context) => LoginScreen(),
-        RegisterScreen.routeName: (context) => RegisterScreen(),
-        ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
-        ProfileScreen.routeName: (context) => ProfileScreen(),
-        UpdateProfileScreen.routeName: (context) => UpdateProfileScreen(),
-
-
-
+    return ListenableBuilder(
+      listenable: ThemeService(),
+      builder: (context, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Movie App',
+          theme: ThemeService().currentTheme,
+          initialRoute: SplashScreen.routeName,
+          routes: {
+            AuthWrapper.routeName: (context) => AuthWrapper(),
+            MainScreen.routeName: (context) => MainScreen(),
+            OnboardingScreen.routeName: (context) => OnboardingScreen(),
+            SplashScreen.routeName: (context) => SplashScreen(),
+            LoginScreen.routeName: (context) => LoginScreen(),
+            RegisterScreen.routeName: (context) => RegisterScreen(),
+            ForgotPasswordScreen.routeName: (context) => ForgotPasswordScreen(),
+            ProfileScreen.routeName: (context) => ProfileScreen(),
+            UpdateProfileScreen.routeName: (context) => UpdateProfileScreen(),
+          },
+        );
       },
     );
   }

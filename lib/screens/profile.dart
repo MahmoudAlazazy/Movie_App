@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:movies/models/movie.dart';
 import 'package:movies/widgets/movie_card.dart';
-import 'update_profile.dart';
+import 'package:movies/services/theme_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = "prof";
@@ -20,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ThemeService _themeService = ThemeService();
   late TabController _tabController;
 
   String _userName = 'Loading...';
@@ -87,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1E1E1E),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Column(
         children: [
           Padding(
@@ -125,16 +126,38 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ],
                 ),
                 const SizedBox(height: 15),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    _userName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          _userName,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.headlineSmall?.color,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () async {
+                        await _themeService.toggleTheme();
+                      },
+                      icon: Icon(
+                        _themeService.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                        color: Theme.of(context).iconTheme.color,
+                        size: 28,
+                      ),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.surface.withOpacity(0.8),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 25),
               ],
@@ -304,16 +327,16 @@ class _ProfileScreenState extends State<ProfileScreen>
       children: [
         Text(
           count,
-          style: const TextStyle(
-            color: Colors.white,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.headlineSmall?.color,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),
         Text(
           label,
-          style: const TextStyle(
-            color: Colors.white70,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
             fontSize: 14,
           ),
         ),

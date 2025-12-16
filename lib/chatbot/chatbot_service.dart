@@ -6,6 +6,13 @@ import '../models/movie_model.dart';
 import 'intent_detector.dart';
 import 'recommendation_engine.dart';
 
+class ChatBotResponse {
+  final String text;
+  final List<Movie> movies;
+
+  ChatBotResponse({required this.text, required this.movies});
+}
+
 class ChatBotService {
   List<Movie> _movies = [];
 
